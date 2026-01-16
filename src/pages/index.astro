@@ -2,6 +2,52 @@
 import Layout from "../layouts/Layout.astro";
 ---
 <Layout titre="Accueil">
-  <h1>Accueil</h1>
-</Layout>
+  <section class="rounded-2xl bg-white p-6 shadow-sm">
+    <h1 class="text-3xl font-bold">Trouvez votre futur chez-vous</h1>
+    <p class="mt-2 max-w-2xl text-gray-600">
+      Achat, location, estimation : une agence simple, rapide, et efficace.
+    </p>
 
+    <div class="mt-6 flex flex-wrap gap-3">
+      <a
+        href="/offres"
+        class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+      >
+        Voir les offres
+      </a>
+      <a
+        href="#services"
+        class="rounded-xl bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-800 hover:bg-gray-200"
+
+  </section>
+
+  <section id="services" class="mt-8">
+    <h2 class="text-xl font-bold">Nos services</h2>
+
+    <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="rounded-2xl bg-white p-5 shadow-sm">
+        <p class="text-sm font-semibold text-blue-600">Achat</p>
+        <h3 class="mt-1 font-bold">Accompagnement complet</h3>
+        <p class="mt-2 text-sm text-gray-600">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
+        </p>
+      </div>
+
+      <div class="rounded-2xl bg-white p-5 shadow-sm">
+        <p class="text-sm font-semibold text-blue-600">Location</p>
+        <h3 class="mt-1 font-bold">Offres mises à jour</h3>
+        <p class="mt-2 text-sm text-gray-600">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+        </p>
+      </div>
+
+      <div class="rounded-2xl bg-white p-5 shadow-sm">
+        <p class="text-sm font-semibold text-blue-600">Estimation</p>
+        <h3 class="mt-1 font-bold">Gratuite & rapide</h3>
+        <p class="mt-2 text-sm text-gray-600">
+          Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>

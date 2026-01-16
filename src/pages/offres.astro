@@ -1,6 +1,20 @@
 ---
 import Layout from "../layouts/Layout.astro";
 ---
+
 <Layout titre="Offres">
-  <h1>Offres</h1>
+  <h1 class="text-2xl font-bold">Offres</h1>
+  <p class="mt-2 text-gray-600">Voici quelques offres.</p>
+
+  <div class="mt-6 space-y-4">
+    <div class="rounded-lg border bg-white p-4">
+      <h2 class="font-semibold">Studio — Paris</h2>
+      <p class="text-sm text-gray-600">22 m² • 980 € / mois</p>
+    </div>
+
+    <div class="rounded-lg border bg-white p-4">
+      <h2 class="font-semibold">T2 — Lyon</h2>
+      <p class="text-sm text-gray-600">45 m² • 219 000 €</p>
+    </div>
+  </div>
 </Layout>
