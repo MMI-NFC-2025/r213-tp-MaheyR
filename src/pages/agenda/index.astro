@@ -1,0 +1,31 @@
+---
+export const prerender = false;
+
+import Layout from "../../src/layouts/Layout.astro";
+import EventCard from "../../src/components/EventCard.astro";
+import { getEventById } from "../../src/backend.mjs";
+
+const { id } = Astro.params;
+const event = await getEventById(id);
+
+if (!event) {
+  console.error(`Event with id ${id} not found`);
+  return Astro.redirect("/agenda");
+}
+---
+
+<Layout title={event.titre ?? event.title ?? "Événement"}>
+  <main class="p-6 space-y-6">
+    <EventCard event={event} showDetails={false} showLink={false} />
+
+    <section class="space-y-2">
+      <h2 class="text-xl font-semibold">Détails</h2>
+
+      {event.date && <p><strong>Date :</strong> {event.dateFormatted ?? event.date}</p>}
+      {event.lieu && <p><strong>Lieu :</strong> {event.lieu}</p>}
+      {event.description && <p><strong>Description :</strong> {event.description}</p>}
+
+      <a class="underline" href="/agenda">← Retour à l’agenda</a>
+    </section>
+  </main>
+</Layout>
