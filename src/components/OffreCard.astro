@@ -8,6 +8,7 @@ const { offre } = Astro.props;
   <PbImage record={offre} recordImage={offre.images?.[0]} width={900} height={600} />
 </div>
 <a href={`/agenda/${offre.id}`}>Plus d'info</a>
+<a class="underline" href={`/offres/${offre.id}`}>Voir plus</a>
 
 
   <div class="p-4 space-y-2">

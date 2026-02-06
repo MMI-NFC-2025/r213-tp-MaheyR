@@ -1,0 +1,27 @@
+---
+export const prerender = false;
+
+import Layout from "../../layouts/Layout.astro";
+import { getOffre } from "../../backend.mjs";
+
+const { id } = Astro.params;
+const offre = await getOffre(id);
+
+if (!offre) {
+  console.error(`Offre with id ${id} not found`);
+  return Astro.redirect("/offres");
+}
+---
+
+<Layout titre={offre.nomMaison}>
+  <h2 class="text-2xl font-bold">{offre.nomMaison}</h2>
+
+  <ul class="mt-4 space-y-2">
+    {offre.adresse && <li><strong>Adresse :</strong> {offre.adresse}</li>}
+    {offre.surface && <li><strong>Surface :</strong> {offre.surface} m²</li>}
+    {offre.prix && <li><strong>Prix :</strong> {offre.prix} €</li>}
+  </ul>
+
+  <a class="underline inline-block mt-6" href="/offres">← Retour aux offres</a>
+</Layout>
+
