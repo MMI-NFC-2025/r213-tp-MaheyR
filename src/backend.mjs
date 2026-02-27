@@ -28,3 +28,31 @@ export async function getOffre(id) {
     return null;
   }
 }
+export async function addOffre(house) {
+  try {
+    await db.collection("maison").create(house);
+    return {
+      success: true,
+      message: "Offre ajoutée avec succès",
+    };
+  } catch (error) {
+    console.log("Une erreur est survenue en ajoutant la maison", error);
+    return {
+      success: false,
+      message: "Une erreur est survenue en ajoutant la maison",
+    };
+  }
+}
+
+export async function filterByPrix(minPrix, maxPrix) {
+  try {
+    const data = await db.collection("maison").getFullList({
+      sort: "-created",
+      filter: `prix >= ${minPrix} && prix <= ${maxPrix}`,
+    });
+    return data;
+  } catch (error) {
+    console.log("Une erreur est survenue en filtrant les maisons", error);
+    return [];
+  }
+}

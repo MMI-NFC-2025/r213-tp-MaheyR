@@ -1,0 +1,82 @@
+---
+export const prerender = false;
+
+import Layout from "../../layouts/Layout.astro";
+import { addOffre } from "../../backend.mjs";
+
+let message = "";
+
+if (Astro.request.method === "POST") {
+  const formData = await Astro.request.formData();
+  const response = await addOffre(formData);
+  message = response.message;
+}
+---
+
+<Layout titre="Ajouter une offre">
+  <h1 class="text-2xl font-bold">Ajouter une offre</h1>
+
+  {message && (
+    <p class="mt-4 rounded-md bg-slate-100 p-3">
+      {message}
+    </p>
+  )}
+
+  <form
+    action="/offres/add"
+    method="POST"
+    enctype="multipart/form-data"
+    class="mt-6 space-y-4"
+  >
+    <input
+      type="text"
+      name="nomMaison"
+      placeholder="Nom de la maison"
+      required
+      class="w-full p-2 border border-gray-300 rounded-md"
+    />
+
+    <input
+      type="number"
+      name="prix"
+      placeholder="Prix"
+      class="w-full p-2 border border-gray-300 rounded-md"
+    />
+
+    <input
+      type="number"
+      name="nbSdb"
+      placeholder="Nombre de salles de bain"
+      class="w-full p-2 border border-gray-300 rounded-md"
+    />
+
+    <input
+      type="number"
+      name="nbChambres"
+      placeholder="Nombre de chambres"
+      class="w-full p-2 border border-gray-300 rounded-md"
+    />
+
+    <input
+      type="number"
+      name="surface"
+      placeholder="Superficie"
+      class="w-full p-2 border border-gray-300 rounded-md"
+    />
+
+    <input
+      type="file"
+      name="images"
+      class="w-full p-2 border border-gray-300 rounded-md"
+    />
+
+    <button
+      type="submit"
+      class="bg-slate-600 text-white px-4 py-2 rounded-md"
+    >
+      Ajouter
+    </button>
+  </form>
+
+  <a class="underline inline-block mt-6" href="/offres">← Retour aux offres</a>
+</Layout>
