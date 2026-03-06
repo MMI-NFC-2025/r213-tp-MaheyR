@@ -1,5 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import OffreCard from "../components/OffreCard.astro";
+import { getFavoris } from "../backend.mjs";
+
+const favoris = await getFavoris();
 ---
 <Layout titre="Accueil">
   <section class="rounded-2xl bg-white p-6 shadow-sm">
@@ -14,6 +18,12 @@ import Layout from "../layouts/Layout.astro";
         class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
       >
         Voir les offres
+      </a>
+      <a
+        href="/agents"
+        class="rounded-xl bg-gray-800 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-900"
+      >
+        Nos agents
       </a>
       <a
         href="#services"
@@ -53,4 +63,50 @@ import Layout from "../layouts/Layout.astro";
       </div>
     </div>
   </section>
+
+  {favoris.length > 0 && (
+    <section class="mt-8">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold">Nos coups de cœur</h2>
+        <a href="/offres" class="text-sm text-blue-600 hover:underline">
+          Voir toutes les offres →
+        </a>
+      </div>
+
+      <div class="carousel-container overflow-hidden">
+        <div class="carousel-wrapper flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory">
+          {favoris.map((offre: any) => (
+            <div class="carousel-item min-w-[300px] md:min-w-[350px] snap-start">
+              <OffreCard offre={offre} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <style>
+        .carousel-wrapper {
+          scrollbar-width: thin;
+          scrollbar-color: #cbd5e0 #f1f5f9;
+        }
+        
+        .carousel-wrapper::-webkit-scrollbar {
+          height: 8px;
+        }
+        
+        .carousel-wrapper::-webkit-scrollbar-track {
+          background: #f1f5f9;
+          border-radius: 4px;
+        }
+        
+        .carousel-wrapper::-webkit-scrollbar-thumb {
+          background: #cbd5e0;
+          border-radius: 4px;
+        }
+        
+        .carousel-wrapper::-webkit-scrollbar-thumb:hover {
+          background: #a0aec0;
+        }
+      </style>
+    </section>
+  )}
 </Layout>

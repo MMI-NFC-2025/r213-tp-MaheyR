@@ -1,8 +1,6 @@
 ---
-export const prerender = false;
-
 import Layout from "../../layouts/Layout.astro";
-import OffreCard from "../../components/OffreCard.astro";
+import OffreCard from "../../components/card.astro";
 import { getOffres, filterByPrix } from "../../backend.mjs";
 
 let message = "";
@@ -10,8 +8,8 @@ let offres = [];
 
 if (Astro.request.method === "POST") {
   const data = await Astro.request.formData();
-  const minPrix = parseInt(data.get("minPrix"));
-  const maxPrix = parseInt(data.get("maxPrix"));
+  const minPrix = parseInt(data.get("minPrix") as string);
+  const maxPrix = parseInt(data.get("maxPrix") as string);
 
   if (!Number.isNaN(minPrix) && !Number.isNaN(maxPrix) && minPrix > 0 && maxPrix > 0 && maxPrix > minPrix) {
     offres = await filterByPrix(minPrix, maxPrix);
@@ -32,15 +30,12 @@ if (Astro.request.method === "POST") {
 
 <Layout titre="Offres">
   <h1 class="text-2xl font-bold">Offres</h1>
+
+  <a href="/agents" class="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-md">
+    Voir la liste des agents
+  </a>
+
   <p class="mt-2 text-gray-600">Voici quelques offres.</p>
-
-  <a class="underline inline-block mt-3" href="/offres/add">
-    Ajouter une offre
-  </a>
-
-  <a class="underline inline-block mt-3 ml-4" href="/offres/surface/80">
-    Voir les maisons de plus de 80 m²
-  </a>
 
   <form action="/offres" method="POST" class="mt-6 space-y-3">
     <input
@@ -79,6 +74,7 @@ if (Astro.request.method === "POST") {
     {
       offres.map((offre) => (
         <div class="offre" data-favori={offre.favori?.toString() ?? "false"}>
+          <!-- Utilisation du composant OffreCard pour afficher chaque offre -->
           <OffreCard offre={offre} />
         </div>
       ))
@@ -91,23 +87,22 @@ if (Astro.request.method === "POST") {
 
     button?.addEventListener('click', () => {
       showOnlyFavorites = !showOnlyFavorites;
-      const offres = document.querySelectorAll('.offre');
+      const offres = document.querySelectorAll<HTMLElement>('.offre');
 
       offres.forEach((offre) => {
         const isFavori = offre.dataset.favori === 'true';
 
         if (showOnlyFavorites) {
           offre.style.display = isFavori ? 'block' : 'none';
-          button.textContent = 'Afficher tout';
+          if (button) button.textContent = 'Afficher tout';
         } else {
           offre.style.display = 'block';
-          button.textContent = 'Afficher les favoris';
+          if (button) button.textContent = 'Afficher les favoris';
         }
       });
     });
   </script>
 </Layout>
-
 
 
 

@@ -2,6 +2,7 @@
 export const prerender = false;
 
 import Layout from "../../layouts/Layout.astro";
+import PbImage from "../../components/PbImage.astro";
 import { getOffre } from "../../backend.mjs";
 
 const { id } = Astro.params;
@@ -15,6 +16,10 @@ if (!offre) {
 
 <Layout titre={offre.nomMaison}>
   <h2 class="text-2xl font-bold">{offre.nomMaison}</h2>
+
+  <div class="mt-4 mb-6">
+    <PbImage record={offre} recordImage="images" width={800} height={500} />
+  </div>
 
   <ul class="mt-4 space-y-2">
     {offre.adresse && <li><strong>Adresse :</strong> {offre.adresse}</li>}

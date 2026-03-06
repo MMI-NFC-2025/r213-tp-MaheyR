@@ -1,31 +1,34 @@
 ---
 export const prerender = false;
 
-import Layout from "../../src/layouts/Layout.astro";
-import EventCard from "../../src/components/EventCard.astro";
-import { getEventById } from "../../src/backend.mjs";
+import Layout from "../../layouts/Layout.astro";
+import { getEvents } from "../../backend.mjs";
 
-const { id } = Astro.params;
-const event = await getEventById(id);
-
-if (!event) {
-  console.error(`Event with id ${id} not found`);
-  return Astro.redirect("/agenda");
-}
+const events = await getEvents();
 ---
 
-<Layout title={event.titre ?? event.title ?? "Événement"}>
+<Layout title="Agenda">
   <main class="p-6 space-y-6">
-    <EventCard event={event} showDetails={false} showLink={false} />
+    <h1 class="text-3xl font-bold">Agenda</h1>
+    <p class="text-gray-600">Liste des événements à venir</p>
 
-    <section class="space-y-2">
-      <h2 class="text-xl font-semibold">Détails</h2>
+    <div class="space-y-4">
+      {events.length === 0 ? (
+        <p class="text-gray-500">Aucun événement pour le moment.</p>
+      ) : (
+        events.map((event: any) => (
+          <div class="border rounded-lg p-4 hover:shadow-md transition-shadow">
+            <h2 class="text-xl font-semibold">{event.titre ?? event.title ?? "Événement"}</h2>
+            {event.date && <p class="text-gray-600"><strong>Date :</strong> {event.dateFormatted ?? event.date}</p>}
+            {event.lieu && <p class="text-gray-600"><strong>Lieu :</strong> {event.lieu}</p>}
+            {event.description && <p class="mt-2">{event.description}</p>}
+          </div>
+        ))
+      )}
+    </div>
 
-      {event.date && <p><strong>Date :</strong> {event.dateFormatted ?? event.date}</p>}
-      {event.lieu && <p><strong>Lieu :</strong> {event.lieu}</p>}
-      {event.description && <p><strong>Description :</strong> {event.description}</p>}
-
-      <a class="underline" href="/agenda">← Retour à l’agenda</a>
-    </section>
+    <a class="inline-block mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" href="/">
+      ← Retour à l'accueil
+    </a>
   </main>
 </Layout>

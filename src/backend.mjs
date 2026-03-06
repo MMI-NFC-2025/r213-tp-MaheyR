@@ -1,42 +1,73 @@
-import PocketBase from 'pocketbase';
+import PocketBase from "pocketbase";
 
-const db = new PocketBase("http://127.0.0.1:8090");
+const pb = new PocketBase("http://127.0.0.1:8090");
+
+export function getImageUrl(record, imageField) {
+  const file = Array.isArray(record[imageField])
+    ? record[imageField][0]
+    : record[imageField];
+  return file ? pb.files.getUrl(record, file) : null;
+}
 
 export async function getOffres() {
   try {
-    let data = await db.collection('maison').getFullList({
-      sort: '-created',
+    return await pb.collection("Maison").getFullList({
+      sort: "-created",
     });
-    return data;
   } catch (error) {
-    console.log('Une erreur est survenue en lisant la liste des maisons', error);
     return [];
   }
 }
 
-export async function getImageUrl(record, recordImage) {
-  return db.files.getURL(record, recordImage);
-}
-
-
 export async function getOffre(id) {
   try {
-    const data = await db.collection("maison").getOne(id);
-    return data;
+    return await pb.collection("Maison").getOne(id);
   } catch (error) {
-    console.log("Une erreur est survenue en lisant la maison", error);
     return null;
   }
 }
+
+export async function getOffresBySurface(surfaceMin) {
+  try {
+    return await pb.collection("Maison").getFullList({
+      filter: `surface >= ${surfaceMin}`,
+      sort: "-created",
+    });
+  } catch (error) {
+    return [];
+  }
+}
+
+export async function getOffresSurface50() {
+  try {
+    return await pb.collection("Maison").getFullList({
+      filter: "surface > 50",
+      sort: "-created",
+    });
+  } catch (error) {
+    return [];
+  }
+}
+
+export async function PrixInferieur() {
+  try {
+    return await pb.collection("Maison").getFullList({
+      filter: "prix < 100000",
+      sort: "-created",
+    });
+  } catch (error) {
+    return [];
+  }
+}
+
 export async function addOffre(house) {
   try {
-    await db.collection("maison").create(house);
+    await pb.collection("Maison").create(house);
     return {
       success: true,
       message: "Offre ajoutée avec succès",
     };
   } catch (error) {
-    console.log("Une erreur est survenue en ajoutant la maison", error);
     return {
       success: false,
       message: "Une erreur est survenue en ajoutant la maison",
@@ -46,13 +77,77 @@ export async function addOffre(house) {
 
 export async function filterByPrix(minPrix, maxPrix) {
   try {
-    const data = await db.collection("maison").getFullList({
-      sort: "-created",
+    return await pb.collection("Maison").getFullList({
       filter: `prix >= ${minPrix} && prix <= ${maxPrix}`,
+      sort: "-created",
     });
-    return data;
   } catch (error) {
-    console.log("Une erreur est survenue en filtrant les maisons", error);
     return [];
+  }
+}
+
+export async function getFavoris() {
+  try {
+    return await pb.collection("Maison").getFullList({
+      filter: "favori=true",
+      sort: "-created",
+    });
+  } catch (error) {
+    return [];
+  }
+}
+
+export async function setFavori(house) {
+  try {
+    await pb.collection("Maison").update(house.id, {
+      favori: !house.favori,
+    });
+  } catch (error) {}
+}
+
+export async function getAgents() {
+  try {
+    return await pb.collection("agent").getFullList({
+      sort: "-created",
+    });
+  } catch (error) {
+    return [];
+  }
+}
+
+export async function getAgent(id) {
+  try {
+    return await pb.collection("agent").getOne(id);
+  } catch (error) {
+    return null;
+  }
+}
+
+export async function getOffresByAgent(agentId) {
+  try {
+    return await pb.collection("Maison").getFullList({
+      filter: `agent="${agentId}"`,
+      sort: "-created",
+    });
+  } catch (error) {
+    return [];
+  }
+}
+
+export async function getEvents() {
+  try {
+    return await pb.collection("agenda").getFullList({
+      sort: "-date",
+    });
+  } catch (error) {
+    return [];
+  }
+}
+
+export async function getEventById(id) {
+  try {
+    return await pb.collection("agenda").getOne(id);
+  } catch (error) {
+    return null;
   }
 }

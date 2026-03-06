@@ -4,19 +4,23 @@ const { offre } = Astro.props;
 ---
 
 <div class="group relative overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-<div class="h-64 bg-slate-200 flex items-center justify-center overflow-hidden">
-  <PbImage record={offre} recordImage="images" width={900} height={600} />
-</div>
+  <div class="h-64 bg-slate-200 flex items-center justify-center overflow-hidden">
+    <PbImage record={offre} recordImage="images" width={900} height={600} />
+  </div>
 
-<a class="absolute top-0 right-0 mt-2 mr-2 px-4 py-2 bg-blue-600 text-white rounded-md" href={`/offres/${offre.id}`}>Voir plus</a>
+  <a href={`/offres/${offre.id}`} class="absolute top-0 right-0 mt-2 mr-2 px-4 py-2 bg-blue-600 text-white rounded-md">
+    Voir plus
+  </a>
 
-<button class="favoriteButton absolute bottom-0 left-0 p-2 text-white rounded-br-lg" data-offre={JSON.stringify(offre)}>
-  <img id="favorite-icon" src={offre.favori ? "favorite_filled.png" : "favorite.png"} alt="Favorite Icon" class="w-6 h-6" />
-</button>
+
+  <button class="favoriteButton absolute bottom-0 left-0 p-2 text-white rounded-br-lg" data-offre={JSON.stringify(offre)}>
+    <img id="favorite-icon" src={offre.favori ? "favorite_filled.png" : "favorite.png"} alt="Favorite Icon" class="w-6 h-6" />
+  </button>
 
 
   <div class="p-4 space-y-2">
     <h2 class="text-lg font-semibold">{offre.nomMaison}</h2>
+    <p class="text-sm">Prix : {offre.prix_maison} €</p>
   </div>
 </div>
 
